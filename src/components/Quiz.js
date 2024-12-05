@@ -172,7 +172,7 @@ const Quiz = () => {
 
         {quizFeedback ? null : (<div className="quiz-controls flex justify-between">
           {currentPage > 1 && (
-            <button onClick={() => { /* Handle previous page */ }} className="bg-gray-200 text-black py-2 px-4 rounded-md hover:bg-gray-300 transition-colors">
+            <button  onClick={() => dispatch({ type: "SET_PAGE", payload: currentPage - 1 })} className="bg-gray-200 text-black py-2 px-4 rounded-md hover:bg-gray-300 transition-colors">
               Previous
             </button>
           )}
