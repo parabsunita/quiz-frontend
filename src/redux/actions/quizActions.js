@@ -7,7 +7,7 @@ export const fetchQuestions = (topics) => async (dispatch) => {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-            `http://localhost:5000/api/questions/${topics[0]}`,
+            `https://quizz-backend-app.onrender.com/api/questions/${topics[0]}`,
             {
                 headers: {
                     Authorization: `${token}`, // Ensure token is valid and prefixed with 'Bearer '
@@ -29,7 +29,7 @@ export const fetchQuestions = (topics) => async (dispatch) => {
 };
 
 // Save user responses
-export const handleSubmit = async (selectedAnswers, setQuizFeedback,dispatch) => {
+export const handleSubmit = (selectedAnswers, setQuizFeedback) => async (dispatch) => {
     if (Object.keys(selectedAnswers).length === 0) {
         alert("Please answer all questions before submitting.");
         return;
@@ -38,7 +38,7 @@ export const handleSubmit = async (selectedAnswers, setQuizFeedback,dispatch) =>
     try {
         const token = localStorage.getItem("token"); // JWT for authentication
         const response = await axios.post(
-            "http://localhost:5000/api/quizz/submit",
+            "https://quizz-backend-app.onrender.com/api/quizz/submit",
             { responses: selectedAnswers },
             {
                 headers: {
@@ -48,15 +48,21 @@ export const handleSubmit = async (selectedAnswers, setQuizFeedback,dispatch) =>
             }
         );
 
+        // Dispatch success action
         dispatch({
             type: "SUBMIT_QUIZ_SUCCESS",
             payload: response.data,
         });
+
+        // Update quiz feedback state
+        setQuizFeedback(response.data);
     } catch (error) {
+        // Dispatch failure action
         dispatch({
             type: "SUBMIT_QUIZ_FAIL",
             payload: error.response?.data?.message || "Failed to submit quiz",
         });
+
+        console.error("Quiz submission failed:", error);
     }
 };
-

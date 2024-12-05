@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"; 
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom"; 
+import "./Topics.css";
+import Footer from "./Footer";
 
 const Topics = () => {
     const [selectedTopics, setSelectedTopics] = useState([]);
@@ -28,7 +30,7 @@ const Topics = () => {
         try {
             const token = localStorage.getItem("token"); // Assuming JWT is stored in localStorage
             const response = await axios.post(
-                "http://localhost:5000/api/topics/select",
+                "https://quizz-backend-app.onrender.com/api/topics/select",
                 { topics: selectedTopics },
                 {
                     headers: {
@@ -46,37 +48,58 @@ const Topics = () => {
     };
 
     return (
-        <div style={{ padding: "20px", maxWidth: "400px", margin: "auto", textAlign: "center" }}>
-            <h2>Select Topics</h2>
-            <div style={{ textAlign: "left" }}>
+        <>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white shadow-sm rounded-[16px] pt-10 pb-12 px-[70px] max-w-[445px] w-full">
+            <h2  className="text-3xl font-normal text-login-grey text-center mb-6">Select Topics</h2>
+            <div className="text-left mb-5">
                 {topics.map((topic) => (
-                    <label key={topic} style={{ display: "block", margin: "10px 0" }}>
-                        <input
-                            type="checkbox"
-                            value={topic}
-                            checked={selectedTopics.includes(topic)}
-                            onChange={() => handleCheckboxChange(topic)}
-                        />
-                        {topic}
+                    <label
+                    key={topic}
+                   className="block text-lg  mb-4 text-login-grey"
+                    >
+                    <input
+                        type="checkbox"
+                        value={topic}
+                        checked={selectedTopics.includes(topic)}
+                        onChange={() => handleCheckboxChange(topic)}
+                        className="form-checkbox h-4 w-4 mr-3  bg-gray-200 text-gray-600 border-gray-300 focus:ring-gray-600"
+                    />
+               <span
+  className="font-semibold hover:underline hover:text-black"
+  style={{ textDecorationColor: '#88C200' }} 
+>
+  {topic}
+</span>
+
+
+
+
                     </label>
                 ))}
-            </div>
+                </div>
+
             <button
                 onClick={handleSubmit}
-                style={{
-                    marginTop: "20px",
-                    padding: "10px 20px",
-                    backgroundColor: "#007bff",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                }}
+               className="w-full bg-brand-green py-2 mt-5 rounded-lg hover:bg-brand-green-dark transition-colors text-login-grey"
             >
                 Submit
             </button>
         </div>
+        {/* <div className="flex ">
+        <p className="p-3 border border-error-red text-error-red rounded-lg bg-lightred">
+        <strong>Question:</strong> jhgfjdsh
+        </p>
+        <p className="p-3 border border-green-100 text-green-100 rounded-lg bg-lightgreen">
+        <strong>Question:</strong> jhgfjdsh
+        </p>
+        </div> */}
+        </div>
+        
+        <Footer />
+        </>
     );
 };
 
 export default Topics;
+

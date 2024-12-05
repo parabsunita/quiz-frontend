@@ -1,0 +1,29 @@
+.form-checkbox {
+    accent-color: #7D8175; /* This sets the checkmark color to gray */
+    width: 20px; /* Adjust size to your preference */
+    height: 20px;
+    appearance: none; /* Remove default styling */
+    background-color: transparent !important; /* Transparent background */
+    border: 1px solid #7D8175; /* Outline color */
+    border-radius: 3px; /* Slightly rounded corners */
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .form-checkbox:checked {
+    background-color: transparent !important; /* Ensure background remains transparent when checked */
+    border: 1px solid #7D8175;
+  }
+  
+  .form-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    width: 6px; /* Size of the checkmark */
+    height: 9px;
+    transform: translate(-50%, -50%) rotate(45deg); /* Center and rotate */
+    border-right: 2px solid #7D8175; /* Right part of the checkmark */
+    border-bottom: 2px solid #7D8175; /* Bottom part of the checkmark */
+  }
+  
