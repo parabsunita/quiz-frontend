@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {  useSelector } from "react-redux";
 import {  useNavigate } from "react-router-dom"; 
 import "./Topics.css";
 import Footer from "./Footer";
