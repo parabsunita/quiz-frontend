@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/actions/authActions";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import { Brand_logo } from "../../assets/image";
 
@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const success = await dispatch(login({ email, password }));
+    await dispatch(login({ email, password }));
     navigate("/topics");
   };
 

@@ -111,7 +111,7 @@ import { useLocation } from "react-router-dom";
 
 
 const Quiz = () => {
-  const { questions, currentPage, loading, error } = useSelector((state) => state.quiz);
+  const { questions, currentPage } = useSelector((state) => state.quiz);
   const dispatch = useDispatch();
   const location = useLocation();
   const questionsPerPage = 1; // Number of questions per page

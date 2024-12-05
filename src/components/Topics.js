@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom"; 
+import {  useSelector } from "react-redux";
+import {  useNavigate } from "react-router-dom"; 
 import "./Topics.css";
 import Footer from "./Footer";
 
 const Topics = () => {
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [topics] = useState(["Math", "Science", "History", "Geography", "Programming"]);
-    const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
     // Handle topic selection
