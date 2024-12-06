@@ -7,7 +7,7 @@ export const fetchQuestions = (topics) => async (dispatch) => {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-            `https://quizz-backend-app.onrender.com/api/questions/${topics[0]}`,
+            `${process.env.REACT_APP_API_BASE_URL}/api/questions/${topics[0]}`,
             {
                 headers: {
                     Authorization: `${token}`, // Ensure token is valid and prefixed with 'Bearer '
@@ -38,7 +38,7 @@ export const handleSubmit = (selectedAnswers, setQuizFeedback) => async (dispatc
     try {
         const token = localStorage.getItem("token"); // JWT for authentication
         const response = await axios.post(
-            "https://quizz-backend-app.onrender.com/api/quizz/submit",
+            `${process.env.REACT_APP_API_BASE_URL}/api/quizz/submit`,
             { responses: selectedAnswers },
             {
                 headers: {

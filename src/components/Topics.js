@@ -3,8 +3,10 @@ import axios from "axios";
 import {  useNavigate } from "react-router-dom"; 
 import "./Topics.css";
 import Footer from "./Footer";
+import Spinner from "./Spinner";
 
 const Topics = () => {
+    const [loader,setLoader] =useState(false)
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [topics] = useState(["Math", "Science", "History", "Geography", "Programming"]);
     const navigate = useNavigate();
@@ -25,6 +27,7 @@ const Topics = () => {
             return;
         }
 
+        setLoader(true)
         try {
             const token = localStorage.getItem("token"); // Assuming JWT is stored in localStorage
             const response = await axios.post(
@@ -37,6 +40,7 @@ const Topics = () => {
                     },
                 }
             );
+            
          navigate('/quiz',{state:{selectedTopics:selectedTopics}});
             console.log(response.data);
         } catch (error) {
@@ -47,6 +51,7 @@ const Topics = () => {
 
     return (
         <>
+        {loader ?<Spinner/>:null}
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-sm rounded-[16px] pt-10 pb-12 px-[70px] max-w-[445px] w-full">
             <h2  className="text-3xl font-normal text-login-grey text-center mb-6">Select Topics</h2>

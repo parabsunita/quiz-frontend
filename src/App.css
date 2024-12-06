@@ -13,6 +13,9 @@
   }
 }
 
+
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -33,6 +36,39 @@
   from {
     transform: rotate(0deg);
   }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-main-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f3e7e7;
+  opacity: 0.4;
+}
+
+.absolute-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  border: 10px solid #f3f3f3;
+  /* Light gray background */
+  border-top: 10px solid rgb(151 215 0 / var(--tw-bg-opacity, 1));
+  /* Blue spinner */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
   to {
     transform: rotate(360deg);
   }

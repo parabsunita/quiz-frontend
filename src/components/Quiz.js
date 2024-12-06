@@ -2,111 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, handleSubmit } from "../redux/actions/quizActions";
 import { useLocation } from "react-router-dom";
-
-// const Quiz = () => {
-//   const { questions, currentPage, loading, error } = useSelector((state) => state.quiz);
-
-//   const [selectedAnswers, setSelectedAnswers] = useState({});
-//   const [quizFeedback, setQuizFeedback] = useState(null);
-//   const questionsPerPage = 1; // Number of questions per page
-
-//   const currentQuestion = questions[(currentPage - 1) * questionsPerPage];
-
-//   // Handle answer selection
-//   const handleAnswerSelect = (questionId, option) => {
-//     setSelectedAnswers((prev) => ({ ...prev, [questionId]: option }));
-//   };
-
-//   // Submit the quiz
-//   const handleSubmitQuiz = async () => {
-//     if (Object.keys(selectedAnswers).length < questions.length) {
-//       alert("Please answer all questions before submitting!");
-//       return;
-//     }
-
-//     dispatch(handleSubmit(selectedAnswers, setQuizFeedback,dispatch));
-//   };
-
-//   if (loading) return <p>Loading questions...</p>;
-//   if (error) return <p>Error: {error}</p>;
-
-//   return (
-//     <div className="quiz-container">
-//       <h1>Quiz</h1>
-
-//       {currentQuestion && (
-//         <div className="question-card" key={currentQuestion._id}>
-//           <h3>{currentQuestion.question}</h3>
-//           <div className="options">
-//             {currentQuestion.options.map((option) => (
-//               <label key={option}>
-//                 <input
-//                   type="radio"
-//                   name={`question-${currentQuestion._id}`}
-//                   value={option}
-//                   checked={selectedAnswers[currentQuestion._id] === option}
-//                   onChange={() => handleAnswerSelect(currentQuestion._id, option)}
-//                 />
-//                 {option}
-//               </label>
-//             ))}
-//           </div>
-//         </div>
-//       )}
-
-//       <div className="quiz-controls">
-//         {currentPage > 1 && (
-//           <button
-//             onClick={() => dispatch({ type: "SET_PAGE", payload: currentPage - 1 })}
-//           >
-//             Previous
-//           </button>
-//         )}
-
-//         {currentPage < Math.ceil(questions.length / questionsPerPage) ? (
-//           <button
-//             onClick={() => dispatch({ type: "SET_PAGE", payload: currentPage + 1 })}
-//           >
-//             Next
-//           </button>
-//         ) : (
-//           <button onClick={handleSubmitQuiz}>Submit</button>
-//         )}
-//       </div>
-
-//       {/* Display feedback after quiz submission */}
-//       {quizFeedback && (
-//         <div className="quiz-feedback">
-//           <h2>Quiz Results</h2>
-//           <p>Score: {quizFeedback.score}</p>
-//           <div className="feedback-details">
-//             {quizFeedback.feedback.map((item) => (
-//               <div
-//                 key={item.questionId}
-//                 className={item.isCorrect ? "correct" : "incorrect"}
-//               >
-//                 <p>
-//                   <strong>Question:</strong> {item.question}
-//                 </p>
-//                 <p>
-//                   <strong>Your Answer:</strong> {item.userAnswer}{" "}
-//                   {item.isCorrect ? "(Correct)" : "(Incorrect)"}
-//                 </p>
-//                 {!item.isCorrect && (
-//                   <p>
-//                     <strong>Correct Answer:</strong> {item.correctAnswer}
-//                   </p>
-//                 )}
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Quiz;
+import Spinner from "./Spinner";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -116,16 +13,20 @@ const Quiz = () => {
   const location = useLocation();
   const questionsPerPage = 1; // Number of questions per page
   const currentQuestion = questions[(currentPage - 1) * questionsPerPage];
+  const navigate=useNavigate();
 
   // State for the current page and selected answers
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [quizFeedback, setQuizFeedback] = useState(null);
-
+  const [loader, setLoader] = useState(false)
 
 
   useEffect(() => {
+
     if (location.state?.selectedTopics) {
+      setLoader(true)
       dispatch(fetchQuestions(location.state.selectedTopics));
+      setLoader(false)
     }
   }, [dispatch, location.state?.selectedTopics]);
 
@@ -133,19 +34,26 @@ const Quiz = () => {
   const handleAnswerSelect = (questionId, option) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: option }));
   };
+ const callTopics =()=>{
 
+  navigate("/topics")
+ }
   // Submit the quizs
   const handleSubmitQuiz = async () => {
     if (Object.keys(selectedAnswers).length < questions.length) {
       alert("Please answer all questions before submitting!");
       return;
     }
+    setLoader(true)
 
     dispatch(handleSubmit(selectedAnswers, setQuizFeedback, dispatch));
+    setLoader(false)
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <> 
+    {loader?<Spinner/>:null}
+     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-sm rounded-[16px] pt-10 pb-12 px-[70px] max-w-[70%] w-full">
         <h1 className="text-3xl font-normal text-login-grey text-center mb-6">{quizFeedback ? " Quiz Result" : "Quiz"}</h1>
 
@@ -172,7 +80,7 @@ const Quiz = () => {
 
         {quizFeedback ? null : (<div className="quiz-controls flex justify-between">
           {currentPage > 1 && (
-            <button  onClick={() => dispatch({ type: "SET_PAGE", payload: currentPage - 1 })} className="bg-gray-200 text-black py-2 px-4 rounded-md hover:bg-gray-300 transition-colors">
+            <button onClick={() => dispatch({ type: "SET_PAGE", payload: currentPage - 1 })} className="bg-gray-200 text-black py-2 px-4 rounded-md hover:bg-gray-300 transition-colors">
               Previous
             </button>
           )}
@@ -198,7 +106,7 @@ const Quiz = () => {
               {quizFeedback.feedback.map((item) => (
                 <div
                   key={item.questionId}
-                  className={`py-4 px-6 my-4 rounded-md ${item.isCorrect ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+                  className={`py-4 px-6 my-4 rounded-md ${item.isCorrect ? "bg-green-100 text-green-600 success-green" : "bg-red-100 text-red-600"
                     }`}
                 >
                   <p>
@@ -215,12 +123,13 @@ const Quiz = () => {
                   )}
                 </div>
               ))}
+              <div className="text-center" onClick={callTopics}>Back to Home</div>
             </div>
           </div>
 
         )}
       </div>
-    </div>
+    </div></>
   );
 };
 

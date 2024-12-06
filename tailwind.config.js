@@ -28,6 +28,7 @@ export default {
         'lightred':'#FBE7E6',
         'lightgreen':'#EEFAF3',
         'green-100':'#49BB7D',
+        'success-green':"EEFAF3",
 
       },
       fontFamily: {

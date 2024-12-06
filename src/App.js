@@ -6,6 +6,8 @@ import Topics from "./components/Topics";
 import Quiz from "./components/Quiz";
 import Results from "./components/Results";
 import { useSelector } from "react-redux";
+import "./App.css"
+
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
